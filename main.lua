@@ -31,7 +31,7 @@ function love.update(dt)
     player.velocity = player.velocity + player.gravity * dt
     pipe.x = pipe.x - pipe.speed * dt
     player.y = player.y + player.velocity * dt
-
+    player.angle = math.rad(player.velocity / 275 * 45)
     if (pipe.x < player.x + 50 and pipe.x > player.x -50 and (player.y > pipe.y + 25  or player.y < pipe.y -75)) or player.y < -50 or player.y > 500 then
         love.event.quit()
     end
