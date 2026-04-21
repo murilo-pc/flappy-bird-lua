@@ -1,6 +1,7 @@
 local player
 local pipe
 local background
+local sounds
 
 function love.load()
     pipe = {
@@ -19,6 +20,11 @@ function love.load()
         angle = 0,
         gravity = 400
     }
+    sounds = {
+        jump = love.audio.newSource("assets/jump.wav", "static"),
+        point = love.audio.newSource("assets/point.wav", "static")
+    }
+
     background = love.graphics.newImage("assets/background.png")
 end
 
@@ -26,15 +32,17 @@ function love.update(dt)
     if pipe.x <= -50 then
         pipe.x = 500
         pipe.y = math.random(100, 400)
+        sounds.point:play()
     end
 
+    if (pipe.x < player.x + 50 and pipe.x > player.x -50 and (player.y > pipe.y + 25  or player.y < pipe.y -75)) or player.y < -50 or player.y > 500 then
+        love.event.quit()
+    end
+    
     player.velocity = player.velocity + player.gravity * dt
     pipe.x = pipe.x - pipe.speed * dt
     player.y = player.y + player.velocity * dt
     player.angle = math.rad(player.velocity / 275 * 45)
-    if (pipe.x < player.x + 50 and pipe.x > player.x -50 and (player.y > pipe.y + 25  or player.y < pipe.y -75)) or player.y < -50 or player.y > 500 then
-        love.event.quit()
-    end
 end
 
 function love.draw()
@@ -47,5 +55,6 @@ end
 function love.keypressed(key)
     if key == "space" then
         player.velocity = player.force
+        sounds.jump:play()
     end
 end
