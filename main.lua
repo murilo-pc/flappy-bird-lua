@@ -31,12 +31,16 @@ function love.update(dt)
     player.velocity = player.velocity + player.gravity * dt
     pipe.x = pipe.x - pipe.speed * dt
     player.y = player.y + player.velocity * dt
+
+    if (pipe.x < player.x + 50 and pipe.x > player.x -50 and (player.y > pipe.y + 25  or player.y < pipe.y -75)) or player.y < -50 or player.y > 500 then
+        love.event.quit()
+    end
 end
 
 function love.draw()
     love.graphics.draw(background, 0, 0)
     love.graphics.draw(pipe.sprite, pipe.x, pipe.y + pipe.spacing / 2)
-    love.graphics.draw(pipe.sprite, pipe.x, pipe.y - 450 - pipe.spacing / 2)
+    love.graphics.draw(pipe.sprite, pipe.x, pipe.y - 450 - pipe.spacing / 2, 0, 1, -1, 0, 450)
     love.graphics.draw(player.sprite, player.x, player.y, player.angle, 0.1, 0.1, 25, 25)
 end
 
